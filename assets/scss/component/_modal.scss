@@ -1,0 +1,107 @@
+// 모달 컴포넌트 스타일
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  
+  // 모달 배경
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+  
+  // 모달 컨테이너
+  &__container {
+    position: relative;
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+  }
+  
+  // 모달 헤더
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid #e0e0e0;
+    
+    h3 {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+    }
+  }
+  
+  // 모달 본문
+  &__body {
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+  
+  // 모달 푸터
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  // 닫기 버튼
+  &__close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    
+    &:hover {
+      color: var(--color-black);
+    }
+  }
+  
+  // 크기 변형
+  &--sm .modal__container {
+    max-width: 300px;
+  }
+  
+  &--lg .modal__container {
+    max-width: 800px;
+  }
+  
+  &--xl .modal__container {
+    max-width: 1200px;
+  }
+}
+
+// 모달 애니메이션
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

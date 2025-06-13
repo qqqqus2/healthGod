@@ -1,0 +1,397 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+// Select
+.c-seltype {
+  --csel-bezier: cubic-bezier(.4, 0, .2, 1);
+  --csel-height: 3rem;
+  --csel-height-xl: 3.125rem;
+  --csel-height-xxl: 3.5rem;
+  --csel-padding: .75rem;
+  --csel-padding-x: var(--csel-height);
+  --csel-border-radius: .25rem;
+  --csel-border-color: rgb(var(--gray-07));
+  --csel-color: rgb(var(--gray-07));
+  --csel-active-color: rgb(var(--black));
+  --csel-font-size: .875rem;
+  --csel-label-weight: 400;
+  --csel-optgroup-dim: rgba(0,0,0, .5);
+
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+
+  .c-label {
+    flex: 0 0 auto; /* 고정 크기 */
+    font-weight: var(--csel-label-weight);
+    margin-right: var(--space);
+    @include mixin.textClip;
+  }
+  &.btmline{
+    .c-sel,
+    .c-selbtn{
+      border-radius:0;
+      border:0;
+      border-bottom:2px solid rgb(var(--black));
+    }
+  }
+  &.w-auto{
+    width:auto;
+  }
+  &.xl{
+    .c-sel,
+    .c-selbtn{
+      min-height: var(--csel-height-xl);
+    }
+  }
+  &.xxl{
+    .c-sel,
+    .c-selbtn{
+      min-height: var(--csel-height-xxl);
+    }
+  }
+  &.col5{
+    width: 50%;
+  }
+  &.col6{
+    width: 60%;
+  }
+}
+.c-sel{
+  display: flex;
+  align-items: center;
+  flex:1 auto;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: var(--csel-height);
+  padding: 0 var(--csel-padding-x) 0 var(--csel-padding);
+  border-radius: 0;
+  border:1px solid var(--csel-border-color);
+  background-color: var(--white);
+  font-size: var(--csel-font-size);
+  color:var(--csel-color);
+}
+
+// Custom select group
+.c-selgroup {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0; /* 말줄임 처리를 위해 필요 */
+}
+
+// Custom select button
+.c-selbtn {
+  --cselbtn-disabled-color: rgba(var(--gray-03),1);
+  --cselbtn-disabled-text-color: rgba(var(--gray-07),1);
+
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  position: relative;
+  min-width: 0;
+  height: var(--csel-height);
+  padding: 0 var(--csel-padding) 0 var(--csel-padding);
+  border-radius: var(--csel-border-radius);
+  border: 1px solid var(--csel-border-color);
+  font-size: var(--csel-font-size);
+  color: var(--csel-color);
+  text-align: left;
+  span {
+    display: inline-block;
+    flex-grow: 1;
+    @include mixin.textClip;
+  }
+  &::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--csel-height) - 2px);
+    height: calc(var(--csel-height) - 2px);
+  }
+  &.is-active{
+    color: rgb(var(--black));
+  }
+   // disabled
+  &:disabled,
+  &[disabled]{
+    background-color: var(--cselbtn-disabled-color);
+    color: var(--cselbtn-disabled-text-color);
+    opacity:1;
+    cursor: not-allowed;
+  }
+}
+
+// Start : Custom select option group
+.c-optgroup {
+  --optgroup-transition: max-width 0.3s ease, max-height 0.3s ease, transform 0.3s ease-out, opacity 0.3s ease;
+  overflow: hidden;
+  visibility: hidden;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;right:0;
+  bottom:0;left: 0;
+  z-index: -1;
+  width: 0;
+  height:0;
+  margin:auto;
+  background-color: transparent;
+  .c-opt-inner{
+    overflow-x: hidden;
+    overflow-y: auto;
+    position:relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    z-index:101;
+    border-radius: 5px;
+    background-color: rgb(var(--white));
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--optgroup-transition);
+  }
+  // 상단
+  .c-opt-header{
+    display:flex;
+    align-items: center; 
+    justify-content: center;
+    flex: 0 0 auto;
+    position: relative;
+    padding: 1rem 1rem 0.5rem;
+    &:has(.desc){ flex-wrap: wrap; }
+    .desc{
+      width: 100%;
+      display: block;
+      margin-top: 0.5rem;
+      font-size: var(--num-14);
+      &.blue{ color: rgb(var(--primary)); }
+      &.gray{ color: rgb(var(--dimgray)); }
+    }
+  }
+  // 본문
+  .c-opt-body{
+    overflow-x: hidden;
+    overflow-y: auto;
+    display:flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    position: relative;
+    padding:1rem;
+    
+    text-align: center;
+    font-size: var(--num-14);
+    color: rgb(var(--gray-09));
+  }
+  // 하단
+  .c-opt-footer{
+    display: flex;
+    width:100%;
+    .c-opt-btn{
+      &:first-child{ width: 40%; }
+      &:last-child{ width: 60%; }
+    }
+  }
+  // ul
+  .c-optlist {
+    // overflow-x: hidden;
+    // overflow-y: auto;
+    // position:relative;
+    // z-index:101;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    max-width: 0;
+    max-height: 0;
+    margin: 0;
+    // border-radius: 5px;
+    // padding: 1rem 0;
+    opacity: 0;
+    background-color: rgb(var(--white));
+    // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    // transform: translateY(50%);
+    // transition: var(--optgroup-transition);
+  
+    // li
+    .c-optitem {
+      width: 100%;
+      margin: 0;
+      padding: 0 20px;
+      ~ .c-optitem {
+        border-top: 1px solid var(--lightgray);
+      }
+    }
+    .c-radiotype {
+      width:100%;
+      padding: 8px 0;
+      .c-label{
+        width:100%;
+        cursor:pointer;
+      }
+    }
+  }
+  // 위치
+  &.bottom{
+    top:auto;right:auto;
+    width:100%;
+    align-items: flex-end;
+    margin:0;
+    // .c-optlist {
+    //   width: 100%;
+    //   min-width: 100%;
+    //   max-width: 100%;
+    //   border-radius: 8px 8px 0 0;
+    //   box-shadow: none;
+    //   transform: translateY(100%);
+    // }
+    .c-opt-inner{
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      padding: 1rem 0 0;
+      border-radius: 8px 8px 0 0;
+      box-shadow: none;
+      transform: unset;
+    }
+    // 상단
+    .c-opt-header{
+      padding: .5rem 1rem;
+    }
+  }
+  &.is-show {
+    display: flex;
+    visibility: visible;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+    .c-optlist {
+      min-width: 17.5rem;
+      max-width: calc(100% - 2rem);
+      max-height: calc(100% - 2rem);
+      transform: translateY(0);
+      opacity: 1;
+      transition: var(--optgroup-transition);
+    }
+    &.bottom{
+      .c-optlist {
+        min-width: 100%;
+        max-width: 100%;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+/* End : Custom select option group */
+
+// 모달 하단 버튼
+.c-opt-btn{
+  overflow:hidden;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position:relative;
+  width:100%;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background-color:rgb(var(--primary));
+  color:var(--white);
+  font-size: var(--num-16);
+  font-weight:vars.$regular;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1;
+  @include mixin.rippleEffectPrimary;
+
+  &:first-child{
+    border-bottom-left-radius: var(--c-modal-radius);
+  }
+  &:last-child{
+    border-bottom-right-radius: var(--c-modal-radius);
+  }
+  &:only-child{
+    margin:0;
+    border-bottom-right-radius: var(--c-modal-radius);
+    border-bottom-left-radius: var(--c-modal-radius);
+  }
+  .text{
+    color:inherit;
+    font-size:inherit;
+    font-weight:inherit;
+  }
+  &:active{
+    color:var(--white);
+    font-size: var(--num-16);
+    font-weight:vars.$regular;
+  }
+  // 두번째 색상
+  &.secondary{
+    background-color:rgb(var(--secondary));
+  }
+  // 세번째 색상
+  &.tertiary{
+    background-color:rgb(var(--tertiary));
+  }
+  // cancel
+  &.cancel{
+    background-color:var(--silver);
+  }
+  // black 색상
+  &.black{
+    background-color:vars.$black;
+  }
+  &.gray{
+    background-color:vars.$gray;
+  }
+  // white 색상
+  &.white{
+    background-color:var(--white);
+    color:rgb(var(--black));
+  }
+  // outline 타입
+  &.outline{
+    border-color:rgb(var(--primary));
+    background-color:transparent;
+    color:rgb(var(--black));
+    &:first-child{
+      margin-right:-1px;
+    }
+    &:only-child{
+      margin:0;
+    }
+    &.secondary{
+      border-color:rgb(var(--secondary));
+    }
+    &.tertiary{
+      border-color:rgb(var(--tertiary));
+    }
+    &.cancel{
+      border-color:var(--silver);
+    }
+    &.gray{
+      border-color:vars.$gray;
+    }
+    &.black{
+      border-color:vars.$black;
+    }
+  }
+  // disabled
+  &:disabled,
+  &[disabled]{
+    opacity: .4;
+  }
+  &.outline{
+    @include mixin.rippleEffectWhite;
+    &:disabled,
+    &[disabled]{
+      opacity: .4;
+    }
+  }
+}

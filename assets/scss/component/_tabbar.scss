@@ -1,0 +1,210 @@
+@use "./../common/variable" as vars;
+@use "./../common/mixin" as mixin;
+@use "sass:map";
+@use "sass:color";
+@use "sass:list";
+
+// Tabbar
+.c-tabbar {
+    --c-tabbar-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+    --c-tabbar-height: 3.5rem;
+    --c-tabbar-btn-width: 3rem;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 1.5rem 1.5rem 0 0;
+    // font-size:.875rem;
+    background-repeat: no-repeat;
+    background-color: rgb(var(--white));
+    background-position: 50% 50%;
+
+    .tabbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        flex: 1;
+        position: relative;
+        height: var(--c-tabbar-height);
+        color: rgb(var(--gray-08));
+        @include mixin.rippleEffectWhite;
+        .text {
+            line-height: 1.125rem;
+        }
+        &[aria-selected="true"] {
+            .icon {
+                background-color: rgb(var(--black));
+            }
+            .text {
+                color: rgb(var(--black));
+                font-weight: vars.$bold;
+            }
+        }
+    }
+    // 다크 모드
+    &[data-theme="dark"] {
+        background-color: rgb(var(--black));
+        .tabbar-btn {
+            &[aria-selected="true"] {
+                .icon {
+                    background-color: rgb(var(--white));
+                }
+                .text {
+                    color: rgb(var(--white));
+                }
+            }
+            @include mixin.rippleEffectPrimary;
+        }
+    }
+    // 가운데 정렬
+    &.center {
+        box-sizing: content-box;
+        padding: 0.75rem 0 0;
+        border-top: 0;
+        .tabbar-btn {
+            padding: 0.75rem 0;
+            &.home {
+                position: absolute;
+                left: 50%;
+                transform: translate(-38%, 0);
+                z-index: 1;
+                flex: 0 0 var(--c-tabbar-btn-width);
+                width: var(--c-tabbar-btn-width);
+                height: var(--c-tabbar-btn-width);
+                margin-top: -20px;
+                border-radius: 50%;
+                background-color: var(--white);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                .icon {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    animation: iconBounce 0.75s ease-out infinite alternate;
+                }
+                .text {
+                    padding-top: 20px;
+                }
+            }
+        }
+        .c-tabbar-group {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-grow: 1;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+            &:first-of-type {
+                margin-right: calc(var(--c-tabbar-btn-width) / 2);
+                padding-right: calc(var(--c-tabbar-btn-width) / 2);
+                border-radius: 0 50% 0 0 / 0 100% 0 0;
+                transition: border-radius 0.3s;
+            }
+            &:last-of-type {
+                margin-left: calc(var(--c-tabbar-btn-width) / 2);
+                padding-left: calc(var(--c-tabbar-btn-width) / 2);
+                border-radius: 50% 0 0 0 / 100% 0 0 0;
+                transition: border-radius 0.3s;
+            }
+            @media (min-width: 440px) {
+                &:first-of-type {
+                    border-radius: 0 30% 0 0 / 0 100% 0 0;
+                }
+                &:last-of-type {
+                    border-radius: 30% 0 0 0 / 100% 0 0 0;
+                }
+            }
+        }
+    }
+    // 하단 고정
+    &.fixed-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+    }
+    // 미션이 있을 때
+    .hmission_group {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-height: 3.5rem;
+        padding: 0;
+        background-color: inherit;
+        font-size: 1rem;
+        .hmission_head {
+            display: flex;
+            flex: 0;
+            background-color: inherit;
+            padding: 1rem;
+            color: rgb(var(--white));
+            .text {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                font-weight: vars.$bold;
+                img {
+                    margin: -4px 2px 0 4px;
+                }
+                strong {
+                    color: rgb(var(--yellow-06));
+                }
+            }
+            [class^="ri-"] {
+                flex-shrink: 0;
+            }
+        }
+        .hmission_body {
+            flex: 1 1 auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+            flex-direction: column;
+            padding: 0 1rem 1rem;
+            background-color: inherit;
+            img[src*="sample-"] {
+                width: 100%;
+            }
+            .group {
+                ~ .group {
+                    margin-top: 1rem;
+                }
+            }
+        }
+        &.is-active {
+            max-height: calc(100% - 7rem - 1.5rem);
+        }
+    }
+    &:has(.hmission_group) {
+        flex-direction: column;
+        background-color: rgb(var(--black));
+        .tabbar-btn[aria-selected="true"] {
+            .icon {
+                background-color: rgb(var(--white));
+            }
+            .text {
+                color: rgb(var(--white));
+            }
+        }
+    }
+}
+.c-tabbar-inner {
+    display: flex;
+    flex: 1 1 100%;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: var(--c-tabbar-height);
+}
+@keyframes iconBounce {
+    0% {
+        transform: translate(-50%, -1px);
+    }
+    100% {
+        transform: translate(-50%, 1px);
+    }
+}

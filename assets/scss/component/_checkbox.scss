@@ -1,0 +1,575 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+.c-checktype {
+  --cchk-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+  --cchk-gap: .625rem;
+  --cchk-secondary-color: rgb(var(--gray-13));
+  --cchk-height: 1.125rem;
+  --cchk-height-xxl: 2rem;
+  --cchk-height-xl: 1.75rem;
+  --cchk-height-md: 1.5rem;
+  --cchk-height-xl-box: 3.5rem;
+  --cchk-padding-vertical: calc((var(--cchk-height) - 1.5 * var(--cchk-font-size)) / 2);
+  --cchk-padding-vertical-xxl: calc((var(--cchk-height-xxl) - 1.5 * var(--cchk-font-size-xxl)) / 2);
+  --cchk-padding-vertical-xl: calc((var(--cchk-height-xl) - 1.5 * var(--cchk-font-size-xl)) / 2);
+  --cchk-padding-vertical-md: calc((var(--cchk-height-md) - 1.5 * var(--cchk-font-size-md)) / 2);
+  --cchk-padding: 0.5rem;
+  --cchk-padding-left: 0.5rem;
+  --cchk-padding-right: 0.5rem;
+  --cchk-border-color: var(--lightgray);
+  --cchk-border-radius: .125rem;
+  --cchk-focus-border-color: rgb(var(--black));
+  --cchk-box-shadow-focus: 0 0 0 2px rgba(var(--primary), 0.2);
+  --cchk-bg-color: rgba(255, 255, 255, 1);
+  --cchk-font-size: 0.875rem;
+  --cchk-font-size-xxl: 1.125rem;
+  --cchk-font-size-xl: 1rem;
+  --cchk-font-size-md: 1rem;
+  --cchk-font-weight: 400;
+  --cchk-caret-color-error: rgb(var(--red-10));
+  --cchk-space: .5rem;
+
+  // switch
+  --cchk-switch-button-radius: 3px;
+  --cchk-switch-button-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05);
+  --cchk-switch-button-color: #FFF;
+  --cchk-switch-opacity-disabled: 0.5;
+  --cchk-switch-rail-radius: 3px;
+  --cchk-switch-rail-color: rgba(var(--gray-05));
+  --cchk-switch-rail-color-active: rgb(var(--primary));
+  --cchk-switch-rail-secondary-color-active: rgb(var(--gray-13));
+  --cchk-switch-box-shadow-focus: 0 0 0 2px rgba(var(--primary), 0.2);
+
+  // switch size
+  --cchk-switch-button-width: var(--switch-wh);
+  --cchk-switch-button-width-pressed: var(--switch-w-pressed);
+  --cchk-switch-button-height: var(--switch-wh);
+  --cchk-switch-height: max(var(--switch-h), var(--switch-wh));
+  --cchk-switch-offset: calc((var(--switch-h) - var(--switch-wh)) / 2);
+  --cchk-switch-rail-height: var(--switch-h);
+  --cchk-switch-rail-width: var(--switch-rail-size);
+  --cchk-switch-width: max(40px, calc(var(--switch-rail-size) + var(--switch-wh) - var(--switch-h)));
+  --cchk-switch-width-text: max(56px, calc(var(--switch-rail-size) + var(--switch-wh) - var(--switch-h)));
+  --cchk-switch-width-text-xxl: max(80px, calc(var(--switch-rail-size) + var(--switch-wh) - var(--switch-h)));
+  --cchk-icon-check: url("data:image/svg+xml,%3Csvg width='10' height='2' viewBox='0 0 10 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.333008 0.333374V1.66671H9.66634V0.333374H0.333008Z' fill='black'/%3E%3C/svg%3E");
+  --cchk-icon-check-active: url("data:image/svg+xml,%3Csvg width='12' height='9' viewBox='0 0 12 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.66647 7.11397L10.7947 0.985718L11.7375 1.92852L4.66647 8.99957L0.423828 4.75697L1.36664 3.81417L4.66647 7.11397Z' fill='black'/%3E%3C/svg%3E");
+
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  .c-label{
+    min-width:auto;
+    &::after{
+      content:attr(aria-label);
+      margin-left:var(--cchk-space);
+      min-width:0;
+      color: rgb(var(--gray-10));
+      font-size: var(--cchk-font-size);
+      line-height: 1.5rem;
+    }
+    &.bold{
+      &::after{
+        font-weight:vars.$bold;
+      }
+    }
+  }
+  .icon{
+    display:inline-block;
+    position:relative;
+    width: var(--cchk-height);
+    height: var(--cchk-height);
+    border:2px solid rgb(var(--gray-07));
+    border-radius: var(--cchk-border-radius);
+    background-color:transparent;
+    &::before{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      display:inline-block;
+      width: calc(var(--cchk-height) - 2px);
+      height: calc(var(--cchk-height) - 2px);
+      transition: background-color .2s ease-in;
+    }
+  }
+  // 사이즈
+  &.xxl{
+    &.switch{
+      --switch-wh: 28px;
+      --switch-h: 32px;
+      --switch-w-pressed: 34px;
+      --switch-rail-size: 56px;
+    }
+  }
+  &.xl{
+    &.switch{
+      --switch-wh: 22px;
+      --switch-h: 26px;
+      --switch-w-pressed: 28px;
+      --switch-rail-size: 48px;
+    }
+  }
+  &.md{
+    .c-label::after{
+      font-size: var(--cchk-font-size-md);
+    }
+    &.circle{
+      .icon{
+        width :var(--cchk-height-md);
+        height :var(--cchk-height-md);
+      }
+    }
+  }
+  &.xs{
+    &.switch{
+      --switch-wh: 14px;
+      --switch-h: 18px;
+      --switch-w-pressed: 20px;
+      --switch-rail-size: 32px;
+    }
+  }
+  // 텍스트 방향
+  &.before{
+    .c-label{
+      &::before{
+        content:attr(aria-label);
+        margin-right:var(--cchk-space);
+      }
+      &::after{
+        display:none;
+      }
+    }
+  }
+  // 컬러
+  &.secondary{
+    .icon{
+      &::after{
+        color: rgb(var(--white));
+      }
+    }
+    .c-check:checked{
+      ~ .c-label{
+        .icon {
+          border-color: var(--cchk-secondary-color);
+          background-color: var(--cchk-secondary-color);
+        }
+      }
+    }
+  }
+  // 상태
+  &.error{
+    .c-check:checked{
+      ~ .c-label{
+        .icon {
+          border-color: var(--cchk-caret-color-error);
+          background-color: var(--cchk-caret-color-error);
+          &::after{
+            color: rgb(var(--white));
+          }
+        }
+      }
+    }
+  }
+  // 가로사이즈
+  &.w-auto{
+    .c-label{
+      width: auto;
+    }
+  }
+  // 가로 full 사이즈
+  &.w-full{
+    width: 100%;
+    .c-label{
+      width: 100%;
+    }
+    .text{
+      flex: 1;
+      padding: 0 .5rem;
+      color: rgb(var(--gray-12));
+      em{
+        margin-right: 2px;
+      }
+      ~ .c-btn.c-icon{
+        flex-shrink: 0;
+      }
+      ~ [class^="ri-"]{
+        flex-shrink: 0;
+      }
+    }
+    &.xl{
+      .c-label{
+        height: var(--cchk-height-xl-box);
+      }
+    }
+  }
+  &.box{
+    .c-label{
+      padding: 1rem;
+      border-radius: .5rem;
+    }
+    &:has(.c-btn.c-icon){
+      .c-label{
+        padding-right: .75rem;
+      }
+    }
+    &:has(.c-check:checked){
+      .c-label{
+        border-radius: .5rem;
+        box-shadow:inset 0 0 0 2px rgb(var(--gray-13));
+        .icon{
+          border-color:rgb(var(--gray-13));
+          background-color:rgb(var(--gray-13));
+        }
+      }
+    }
+  }
+  // gray
+  &.gray{
+    .c-label{
+      background-color: rgb(var(--gray-02));
+    }
+    &:has(.c-check:checked){
+      .c-label{
+        background-color: rgb(var(--white));
+      }
+    }
+  }
+  // 정렬
+  &.center{
+    .c-label{
+      justify-content: center;
+    }
+  }
+  // 형태
+  &.circle{
+    .icon{
+      border-radius:50%;
+    }
+  }
+  // round
+  &.round{
+    .c-label{
+      border-radius:var(--cchk-height);
+    }
+  }
+  // squared
+  &.squared{
+    border-radius:0;
+  }
+  // 버튼 타입
+  &.button{
+    padding:0;
+    background-color:transparent;
+    .c-check{
+      &:disabled{
+        ~.c-label{
+          opacity: .4;
+        }
+      }
+      &:checked{
+        ~.c-label{
+          border:1px solid rgb(var(--black));
+          background-color: rgb(var(--white));
+          .icon{
+            display:inline-block;
+            background-color:transparent;
+            box-shadow:none;
+            &::before{
+              background-color:rgb(var(--black));
+            }
+          }
+        }
+        &:disabled{
+          ~.c-label{
+            opacity: .4;
+          }
+        }
+      }
+    }
+    .c-label{
+      height: 2rem;
+      margin:0;
+      padding:.375rem .75rem;
+      background-color:var(--gray-op-01);
+      color:rgb(var(--black));
+      font-size: var(--num-14);
+      cursor: pointer;
+      &::after{
+        margin:0;
+        color: rgb(var(--black));
+      }
+    }
+    .icon{
+      display:none;
+      width:1.25rem;height:1.25rem;
+      margin-right: .25rem;
+      border:0;
+      border-radius: 50%;
+      background-color:transparent;
+      &::before{
+        background-color:rgb(var(--black));
+      }
+    }
+  }
+  // 버튼 타입 outline
+  &.outline{
+    .c-check{
+      &:disabled{
+        ~.c-label{
+          border-color: var(--lightgray);
+        }
+      }
+      &:checked{
+        ~.c-label{
+          border-color:rgb(var(--primary));
+        }
+      }
+    }
+    .c-label{
+      border:1px solid rgb(var(--black));
+      background-color:rgb(var(--white));
+      color:rgb(var(--black));
+      &::after{
+        margin:0;
+        color: inherit;
+      }
+    }
+    .icon{
+      display:none;
+    }
+  }
+  // switch
+  &.switch{
+    --switch-wh: 18px;
+    --switch-h: 22px;
+    --switch-w-pressed: 24px;
+    --switch-rail-size: 40px;
+    .c-label{
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: var(--cchk-switch-width);
+      height: var(--cchk-switch-height);
+      vertical-align: middle;
+    }
+    .c-switch-rail{
+      overflow: hidden;
+      display:inline-block;
+      position: relative;
+      min-width: var(--cchk-switch-width);
+      height: var(--cchk-switch-height);
+      border-radius: calc(var(--cchk-switch-height) / 2);
+      background-color: var(--cchk-switch-rail-color);
+      transition: opacity .3s var(--cchk-bezier), background .3s var(--cchk-bezier), box-shadow .3s var(--cchk-bezier);
+    }
+    .c-switch-button{
+      content: "";
+      display:inline-block;
+      position: absolute;
+      top: var(--cchk-switch-offset);
+      left: var(--cchk-switch-offset);
+      width: var(--cchk-switch-button-width-pressed);
+      height: var(--cchk-switch-button-height);
+      max-width: var(--cchk-switch-button-width);
+      border-radius: calc(var(--cchk-switch-height) / 2);
+      background-color: var(--cchk-switch-button-color);
+      box-shadow: var(--cchk-switch-button-box-shadow);
+      transition: background-color .3s var(--cchk-bezier), left .3s var(--cchk-bezier), opacity .3s var(--cchk-bezier), max-width .3s var(--cchk-bezier), box-shadow .3s var(--cchk-bezier);
+    }
+    .c-check{
+      &:focus{
+        ~.c-label{
+          .c-switch-rail {
+            box-shadow: var(--cchk-box-shadow-focus);
+          }
+        }
+      }
+      &:checked{ 
+        ~ .c-label{
+          .c-switch-rail {
+            background-color: var(--cchk-switch-rail-color-active);
+          }
+          .c-switch-button{
+            left: calc(100% - var(--cchk-switch-button-width) - var(--cchk-switch-offset));
+          }
+        }
+      }
+      &:disabled{
+        ~ .c-label{
+          .c-switch-rail {
+            opacity:.5;
+          }
+        }
+      }
+    }
+    &.intext{
+      .c-switch-rail{
+        min-width: var(--cchk-switch-width-text);
+      }
+      small{
+        --on-off-offset: .5rem;
+        --on-off-offset-xxl: .75rem;
+        position:absolute;
+        top:50%;
+        transform: translateY(-50%);
+        &.on{
+          display:none;
+          left: var(--on-off-offset);
+        }
+        &.off{
+          right: var(--on-off-offset);
+        }
+      }
+      &.xxl{
+        .c-switch-rail{
+          min-width: var(--cchk-switch-width-text-xxl);
+        }
+        small{
+          &.on{
+            left:var(--on-off-offset-xxl);
+          }
+          &.off{
+            right:var(--on-off-offset-xxl);
+          }
+        }
+      }
+      .c-check{
+        &:checked{ 
+          ~ .c-label small.off{display:none;}
+          ~ .c-label small.on{
+            display:inline-block;
+            color:rgb(var(--white));
+          }
+          ~ .c-label .c-switch-rail{
+            background-color: rgb(var(--primary));
+          }
+        }
+      }
+      &.outline{
+        .c-switch-rail{
+          outline:2px solid var(--gray);
+          background-color:rgb(var(--white));
+        }
+        .c-label{
+          border:0;
+        }
+        .c-switch-button{
+          background-color: var(--gray);
+        }
+        .c-check{
+          &:checked{
+            ~ .c-label small.on{
+              color:rgb(var(--primary));
+            }
+            ~ .c-label {
+              .c-switch-rail{
+                outline-color:rgb(var(--primary));
+                background-color:rgb(var(--white));
+              }
+              .c-switch-button{
+                background-color: rgb(var(--primary));
+              }
+            }
+          }
+        }
+      }
+    }
+    &.inicon{
+      .c-switch-button{
+        &::after{
+          content:"";
+          display:inline-block;
+          width: 100%;
+          height: 100%;
+          margin:0 auto;
+          background-position:50% 50%;
+          background-size: .7069rem auto;
+          background-repeat:no-repeat;
+          background-image: var(--cchk-icon-check);
+        }
+      }
+      .c-check{
+        &:checked{
+          ~ .c-label{
+            .c-switch-rail {
+              background-color: var(--cchk-secondary-color);
+            }
+            .c-switch-button{
+              &::after{
+                background-image: var(--cchk-icon-check-active);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  // 세로방향
+  &.vertical{
+    width:100%;
+  }
+  // 50%
+  &.half{
+    width:calc((100% / 2) - var(--cchk-gap));
+  }
+  // 3등분
+  &.thirds{
+    width:calc((100% / 3) - (var(--cchk-gap))*2);
+  }
+}
+.c-check{
+  position:absolute;top:0;left:0;z-index:-1;
+  width: 100%;
+  height: 100%;
+  border:0;
+  border-radius:0;
+  background-color: transparent;
+  &:disabled{
+    ~.c-label{
+      color:var(--gray);
+      .icon{
+        border-color:var(--lightgray);
+        background-color:var(--lightgray);
+        &::before{
+          background-color:transparent;
+        }
+      }
+    }
+  }
+  &:checked{
+    ~.c-label{
+      .icon{
+        border-color:rgb(var(--primary));
+        background-color:rgb(var(--primary));
+        box-shadow:0 0 2px rgb(var(--primary));
+        &::before{
+          background-color:rgb(var(--white));
+        }
+        &::after{
+          // content:"\eb7b";
+          background-position: 50% 50%;
+          background-image: var(--cchk-icon-check-active);
+          color: rgb(var(--white));
+          font-weight: vars.$light;
+        }
+      }
+    }
+    &:disabled{
+      ~.c-label{
+        .icon{
+          border-color:var(--lightgray);
+          background-color:var(--lightgray);
+          box-shadow:0 0 2px var(--lightgray);
+          &::before{
+            background-color:rgb(var(--white));
+          }
+        }
+      }
+    }
+  }
+}

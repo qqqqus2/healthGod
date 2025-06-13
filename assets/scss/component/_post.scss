@@ -1,0 +1,226 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+// Post
+.c-post-area{
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  padding-right: 0;
+  .c-post-header{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    .board{
+      display: block;
+      width: 100%;
+      color: rgb(var(--primary));
+      font-size: var(--num-14);
+    }
+    .title{
+      word-break: break-all;
+      font-size: var(--num-16);
+    }
+  }
+  .c-post-body{
+    .post_cont{ font-size: var(--num-14); }
+    .thumbnail_cont{
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 1rem; 
+      .c-upload-img{
+        max-width: 5rem;
+        object-fit: cover;
+        &::before{ display: none; }
+      }
+    }
+  }
+  .c-post-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  // 짧은 게시글
+  &.middle{
+    .c-post-header{
+      margin-bottom: 0.5rem;
+      &:has(.sub_board){
+        .board{
+          .sub_board{
+            margin-left: 0.25rem;
+            vertical-align: middle;
+            color: var(--gray);
+            font-size: var(--num-12);
+            font-weight: vars.$regular;
+          }
+          + .title{
+            @include mixin.ellipsis;
+            min-width: 100%;
+            font-weight: vars.$regular;
+            font-size: var(--num-14);
+          }
+        }
+      }
+    }
+    .c-post-footer{
+      margin-top: 0;
+      .c-author{
+        .c-img.circle{
+          width: 1.5rem; height: 1.5rem;
+        }
+      }
+      .author_info{
+        .name{
+          display: inline-block;
+          width: auto;
+          margin-right: 0.5rem;
+          font-size: var(--num-12);
+        }
+      }
+    }
+  }
+  // 전문의 Qna
+  &.qna{
+    .c-post-header{
+      display: flex;
+      align-items: center;
+      .board{
+        width: auto;
+        margin-right: 0.5rem;
+        color: rgb(var(--black));
+        font-size: var(--num-16);
+        font-weight: vars.$regular;
+      }
+    }
+  }
+  // 전문의 Qna 상세
+  &.qna_detaile{
+    .c-badge{
+      width: auto;
+      margin-right: 0.25rem;
+    }
+    .c-post-header{
+      width: 100%; 
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid var(--lightgray);
+    }
+    .post_cont_info{ padding-bottom: 0.5rem; }
+    .post_cont{ padding-top: 0.25rem; }
+    .health_history{
+      padding-top: 0.5rem;
+      + .post_cont{ padding-top: 1rem; }
+    }
+    .c-post-footer{
+      &:has(.ad_area){
+        flex-wrap: wrap;
+      }
+      .post_reaction{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 1rem;
+        .hashtag_area{
+          width: 60%;
+        }
+      }
+    }
+  }
+  // 전문의 답변
+  &.answer{
+    .title_label{
+      font-weight: vars.$bold;
+      color: rgb(var(--primary));
+    }
+    .post_cont{
+      padding-top: 1rem;
+    }
+  }
+  // 검색
+  &.search{
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem 0;
+    .c-post-img{
+      width: 3rem; height: 3rem;
+      border-radius: 6px;
+      overflow: hidden;
+      + .c-post-body{
+        margin-left: 0.5rem; 
+      }
+    }
+    .c-post-body{
+      flex: 1 auto;
+      width: calc(4rem + 0.5rem);
+      .title{
+        @include mixin.ellipsis;
+        font-size: var(--num-14);
+      }
+      .post_cont{
+        @include mixin.ellipsis;
+        -webkit-line-clamp: 2;
+        font-size: var(--num-12);
+        em{ color: rgb(var(--primary)); }
+      }
+      + .c-post-img{
+        width: 4rem; height: 4rem;
+        margin-left: 0.5rem;
+        border-radius: unset;
+      }
+    }
+  }
+}
+
+//댓글
+.comment_area{
+  .group_head{
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--lightgray);
+  }
+}
+
+// 글쓰기
+article{
+  &.c-write-area{
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+.c-write-area{
+  .acc_area{
+    padding: 1rem 0;
+    .c-acc-item{
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column-reverse;
+    }
+    .c-acc-header{
+      width: 100%;
+      border: unset;
+      background-color: var(--bg-gray);
+      color: var(--gray);
+      font-size: var(--num-14);
+    }
+    .acc-btn{
+      &::before{
+        width: 1.5rem; height: 1.5rem;
+        background-size: 1.5rem;
+        mask-size: 1.5rem;
+        background-color: var(--gray);
+      }
+      &[aria-expanded=true]{
+        &::before{
+          background-color: var(--gray);
+        }
+      }
+    }
+  }
+}

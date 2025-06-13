@@ -1,0 +1,426 @@
+@charset "UTF-8";
+@use './_variable' as vars;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+// Mixin to apply colors based on theme
+@mixin applyThemeColors($color-set) {
+  --primary: #{list.nth($color-set, 1)}, #{list.nth($color-set, 2)}, #{list.nth($color-set, 3)};
+  --secondary: #{list.nth($color-set, 4)}, #{list.nth($color-set, 5)}, #{list.nth($color-set, 6)};
+}
+@mixin rootDefaultColor {
+  --primary: 91, 103, 186; //#5B67BA - 변경 가능성 있음(검토중)
+  // --primary:255, 235, 96; //#FFEB60 - 변경 가능성 있음(검토중)
+  --secondary: 0, 159, 36; //#9653D9 - 변경 가능성 있음(검토중)
+}
+@mixin rootDefault {
+  color-scheme: only light;
+  /* font */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'droid sans fallback', 'Apple SD Gothic Neo', AppleGothic, sans-serif, Dotum, Tahoma, Verdana, Arial;
+  --font-size: 16px;
+  // --font-size: 14px;
+
+  /* S: 기존 Color(전체 작업 후 삭제) */
+  --error-rgb-color: 235, 47, 0;
+  --success-rgb-color: 0, 159, 36;
+  --deepgray: #424242;
+  --deepgray-rgb: 66, 66, 66;
+  --dimgray: #696969;
+  --gray: #808080;
+  --silver: #c0c0c0;
+  --lightgray: #e1e1e1;
+  --red: #eb2f00;
+  --green: #009f24;
+  --blue: #3769f4;
+  --orange: #f16600;
+  --txt-yellow: #cb7809;
+  --bg-gray: #f7f7f7;
+  --bg-yellow: #ffb900;
+  --error: #eb2f00;
+  --success: #009f24;
+  --code-color: rgba(var(--white), 1);
+  /* E: 기존 Color(전체 작업 후 삭제) */
+
+  /* S: 건강의 신 디자인 Color System */
+  @include applyThemeColors(map.get(vars.$themes, default));
+
+  // Black & White
+  --black: 0, 0, 0; //공통 검정
+  --white: 255, 255, 255; //공통 흰색
+
+  // Gradient
+  --linear-gradient: linear-gradient(45deg, rgba(5, 222, 255, 1), rgba(255, 234, 5, 1));
+
+  // Gray Color Scale
+  --gray-15: #171717;
+  --gray-14: #242424;
+  --gray-13: #333333;
+  --gray-12: #3d3d3d;
+  --gray-11: #555555;
+  --gray-10: #6f6f6f;
+  --gray-09: #8b8b8b;
+  --gray-08: #a5a5a5;
+  --gray-07: #c1c1c1;
+  --gray-06: #dfdfdf;
+  --gray-05: #ececec;
+  --gray-04: #efefef;
+  --gray-03: #f5f4f3;
+  --gray-02: #f7f7f7;
+  --gray-01: #fbfbfb;
+  // Blue Scale
+  --blue-12: #014274;
+  --blue-11: #014d88;
+  --blue-10: #01599d;
+  --blue-09: #0166b3;
+  --blue-08: #0073cb;
+  --blue-07: #2087d6;
+  --blue-06: #469fe3;
+  --blue-05: #6ab6f0;
+  --blue-04: #81bfef;
+  --blue-03: #98c9ef;
+  --blue-02: #b5d8f4;
+  --blue-01: #d2e7f8;
+  // Purple Scale
+  --purple-12: #442365;
+  --purple-11: #533670;
+  --purple-10: #654c7e;
+  --purple-09: #6e5784;
+  --purple-08: #8256ae;
+  --purple-07: #9653d9;
+  --purple-06: #a451f7;
+  --purple-05: #ab5ef9;
+  --purple-04: #b773fb;
+  --purple-03: #c084fc;
+  --purple-02: #d3aafd;
+  --purple-01: #e1c5fe;
+  // Yellow Scale
+  --yellow-12: #aa8525;
+  --yellow-11: #d09c16;
+  --yellow-10: #e7aa0e;
+  --yellow-09: #ffb904;
+  --yellow-08: #ffc71e;
+  --yellow-07: #ffd334;
+  --yellow-06: #ffe04b;
+  --yellow-05: #ffeb60;
+  --yellow-04: #ffef7b;
+  --yellow-03: #fef08c;
+  --yellow-02: #fff7bf;
+  --yellow-01: #fffbe1;
+  // Red Scale
+  --red-12: #bc1a1a;
+  --red-11: #d21c1c;
+  --red-10: #df1d1d;
+  --red-09: #e7301d;
+  --red-08: #e9462b;
+  --red-07: #f5511d;
+  --red-06: #f05c2e;
+  --red-05: #eb683f;
+  --red-04: #f57046;
+  --red-03: #ff784d;
+  --red-02: #ff9d7e;
+  --red-01: #ffc2af;
+
+  // Gray transparent Scale
+  --gray-op-code: 176, 179, 188;
+  --gray-op-04: rgba(var(--gray-op-code), 0.7);
+  --gray-op-03: rgba(var(--gray-op-code), 0.5);
+  --gray-op-02: rgba(var(--gray-op-code), 0.3);
+  --gray-op-01: rgba(var(--gray-op-code), 0.1);
+
+  /* E: 건강의 신 디자인 Color System */
+
+  /* 사이즈 */
+  --num-04: 0.4rem;
+  --num-05: 0.5rem;
+  --num-06: 0.52rem;
+  --num-08: 0.8rem;
+  --num-10: 1rem;
+  --num-12: 1.2rem;
+  --num-13: 1.3rem;
+  --num-14: 1.4rem;
+  --num-15: 1.5rem;
+  --num-16: 1.6rem;
+  --num-17: 1.7rem;
+  --num-18: 1.8rem;
+  --num-19: 1.9rem;
+  --num-20: 2rem;
+  --num-22: 2.2rem;
+  --num-24: 2.4rem;
+  --num-26: 2.6rem;
+  --num-28: 2.8rem;
+  --num-30: 3rem;
+  --num-32: 3.2rem;
+  --num-36: 3.6rem;
+  --num-40: 4rem;
+  --num-44: 4.4rem;
+  --num-46: 4.6rem;
+  --num-48: 4.8rem;
+  --num-52: 5.2rem;
+  --num-56: 5.6rem;
+  --num-64: 6.4rem;
+
+  /* 음수 */
+  --num-04m: -0.4rem;
+  --num-05m: -0.5rem;
+  --num-06m: -0.52rem;
+  --num-08m: -0.8rem;
+  --num-10m: -1rem;
+  --num-12m: -1.2rem;
+  --num-13m: -1.3rem;
+  --num-14m: -1.4rem;
+  --num-16m: -1.6rem;
+  --num-18m: -1.8rem;
+  --num-20m: -2rem;
+  --num-24m: -2.4rem;
+  --num-26m: -2.6rem;
+  --num-28m: -2.8rem;
+  --num-30m: -3rem;
+  --num-32m: -3.2rem;
+  --num-36m: -3.6rem;
+  --num-40m: -4rem;
+  --num-44m: -4.4rem;
+  --num-46m: -4.6rem;
+  --num-48m: -4.8rem;
+  --num-52m: -5.2rem;
+  --num-56m: -5.6rem;
+  --num-64m: -6.4rem;
+
+  --bg-header: var(--white);
+
+  --disabled-border-color: transparent !important;
+  --disabled-bg: var(--lightgray) !important;
+  --disabled-color: var(--gray) !important;
+  --readonly-border-color: transparent !important;
+  --readonly-bg: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+  --readonly-color: var(--black) !important;
+  --space: 0.25rem;
+}
+/* ================== Start : Logo Size ========================= */
+@mixin logoSize($prefix) {
+  // 기본
+  @if $prefix == 'default' {
+    max-height: 1.1rem;
+  }
+}
+/* ================== End : Logo Size ========================= */
+
+// @include mixin.position(absolute, $top: 10px, $left: 50%);
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+@mixin textClip {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+// @include mixin.lineClamp($fontSize: 16, $lineNum: 2, $lineHeight: 1.5);
+@mixin lineClamp($fontSize: null, $lineNum: null, $lineHeight: null) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: $lineNum;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  max-height: ($fontSize * $lineHeight * $lineNum) + px;
+  font-size: $fontSize + px;
+  line-height: $lineHeight;
+}
+@mixin fontSize($size) {
+  @if $size == 'small' {
+    font-size: 0.875rem;
+  } @else if $size == 'large' {
+    font-size: 1.25rem;
+  } @else {
+    font-size: 1rem;
+  }
+}
+@mixin tooltip($size: 5px, $dir: left, $bgcolor: #000) {
+  position: absolute;
+  z-index: 1;
+  background: $bgcolor;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    // filter: drop-shadow(0px -1px 3px rgba(var(--black), 0.12));
+    border-style: solid;
+    @if (($dir == top) or ($dir == bottom)) {
+      left: 50%;
+      border-color: $bgcolor transparent;
+      margin-left: -$size;
+    } @else {
+      top: 50%;
+      margin-top: -$size;
+      border-color: transparent $bgcolor;
+    }
+    @if ($dir == top) {
+      top: -$size;
+      border-width: 0 $size $size $size;
+    }
+    @if ($dir == right) {
+      right: -$size + 1px;
+      border-width: $size 0 $size $size;
+    }
+    @if ($dir == bottom) {
+      bottom: -$size + 1px;
+      border-width: $size $size 0 $size;
+    }
+    @if ($dir == left) {
+      left: -$size + 1px;
+      border-width: $size $size $size 0;
+    }
+  }
+}
+
+@mixin remixIcon {
+  font-family: remixicon !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@mixin bodyScrollbar {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 6px;
+    &-track {
+      border: 0 solid transparent;
+      border-radius: 0;
+      background-color: #fff;
+    }
+    &-thumb {
+      border: 0 solid transparent;
+      border-radius: 20px;
+      background-image: linear-gradient(180deg, #acb5c9 0%, #acb5c9 99%);
+      background-clip: content-box;
+      box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+      &:hover {
+        background-image: linear-gradient(180deg, #acb5c9 0%, #acb5c9 99%);
+      }
+    }
+  }
+}
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    &-track {
+      border: 0 solid transparent;
+      border-radius: 0;
+      background-color: #fff;
+    }
+    &-thumb {
+      border: 0 solid transparent;
+      border-radius: 20px;
+      background-image: linear-gradient(180deg, #acb5c9 0%, #acb5c9 99%);
+      background-clip: content-box;
+      box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+      &:hover {
+        background-image: linear-gradient(180deg, #acb5c9 0%, #acb5c9 99%);
+      }
+    }
+  }
+}
+@mixin rippleEffectWhite {
+  overflow: hidden;
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgb(var(--primary)) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    opacity: 0;
+    transform: scale(10, 10);
+    transition:
+      transform 0.4s,
+      opacity 0.8s;
+    pointer-events: none;
+  }
+  &:active::after {
+    transform: scale(0, 0);
+    opacity: 0.2;
+    transition: 0s;
+  }
+}
+@mixin rippleEffectPrimary {
+  overflow: hidden;
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    opacity: 0;
+    transform: scale(10, 10);
+    transition:
+      transform 0.4s,
+      opacity 0.8s;
+    pointer-events: none;
+  }
+  &:active::after {
+    transform: scale(0, 0);
+    opacity: 0.2;
+    transition: 0s;
+  }
+}
+@mixin disabled {
+  border-color: var(--disabled-border-color);
+  background-color: var(--disabled-bg);
+  color: var(--disabled-color);
+  opacity: 1;
+  pointer-events: none;
+}
+@mixin readonly {
+  border-color: var(--readonly-border-color);
+  background-color: var(--readonly-bg);
+  color: var(--readonly-color);
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* 말줄임 */
+@mixin ellipsis {
+  flex: 1;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+}
+
+/* New 아이콘 */
+@mixin newIcon {
+  position: relative;
+  &::before {
+    content: 'N';
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    background-color: var(--red);
+    line-height: 1;
+    color: var(--white);
+    border-radius: 50%;
+    font-size: var(--num-10);
+    font-weight: vars.$extra;
+  }
+}

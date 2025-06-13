@@ -1,0 +1,35 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+/* 데이터 없는 경우 */
+.c-nodata{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width:100%;
+  padding-top: 6.25rem;
+  .c-img{ 
+    padding: 2.5rem;
+    text-align: center;
+    img{
+      display:inline-block;
+      max-width:6.25rem;
+    }
+  }
+  strong{ 
+    display: block; 
+    width: 100%; 
+    color: rgb(var(--black));
+    font-size: var(--num-20);
+    text-align: center; 
+    & + .desc{
+      margin-top: 1rem;
+      font-size: var(--num-14);
+      color: rgb(var(--gray-10));
+    }
+  }
+}

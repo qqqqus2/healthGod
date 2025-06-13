@@ -1,0 +1,431 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+.c-radiotype {
+  --crad-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+  --crad-gap: .625rem;
+  --crad-secondary-color: rgb(var(--gray-13));
+  --crad-height: 1.25rem;
+  --crad-height-xxl: 2rem;
+  --crad-height-xl: 1.75rem;
+  --crad-padding-vertical: calc((var(--crad-height) - 1.5 * var(--crad-font-size)) / 2);
+  --crad-padding-vertical-xxl: calc((var(--crad-height-xxl) - 1.5 * var(--crad-font-size-xxl)) / 2);
+  --crad-padding-vertical-xl: calc((var(--crad-height-xl) - 1.5 * var(--crad-font-size-xl)) / 2);
+  --crad-padding: 0.5rem;
+  --crad-padding-left: 0.5rem;
+  --crad-padding-right: 0.5rem;
+  --crad-border-color: rgb(var(--gray-07));
+  --crad-border-radius: 0.1875rem;
+  --crad-focus-border-color: rgb(var(--primary));
+  --crad-bg-color: rgba(255, 255, 255, 1);
+  --crad-font-size: 0.875rem;
+  --crad-font-size-xxl: 1.125rem;
+  --crad-font-size-xl: 1rem;
+  --crad-font-size-md: 1rem;
+  --crad-font-weight: 400;
+  --crad-caret-color-error: rgb(var(--red-10));
+  --crad-box-shadow: inset 0 0 0 1px rgb(var(--primary)), 0 0 0 2px rgba(var(--primary), 0.2);
+  --crad-space: .375rem;
+
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  .c-label{
+    min-width:auto;
+    
+    .text{
+      text-align: center;
+    }
+
+    &::after{
+      content:attr(aria-label);
+      min-width:0;
+      margin-left:var(--crad-space);
+      color: rgb(var(--gray-10));
+      font-size: var(--crad-font-size);
+      line-height: 1.5rem;
+    }
+    &.bold{
+      &::after{
+        font-weight:vars.$bold;
+      }
+    }
+  }
+  .icon{
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--crad-height);
+    height: var(--crad-height);
+    border:2px solid rgb(var(--gray-07));
+    border-radius:50%;
+    background-color:transparent;
+    transition: border-color .3s var(--crad-bezier);
+    &::before{
+      content:"";
+      display:none;
+      width: calc(var(--crad-height) / 2);
+      height: calc(var(--crad-height) / 2);
+      border-radius:50%;
+      background-color:rgb(var(--gray-07));
+      transition: background-color .5s var(--crad-bezier);
+    }
+  }
+  // 사이즈
+  &.xxl{
+  }
+  &.xl{
+  }
+  &.md{
+    .c-label{
+      &::after{
+        font-size: var(--crad-font-size-md);
+      }
+    }
+  }
+  // 컬러
+  &.secondary{
+    .icon{
+      &::after{
+        color: rgb(var(--white));
+      }
+    }
+    .c-radio:checked{
+      ~ .c-label{
+        .icon {
+          border-color: var(--crad-secondary-color);
+        }
+      }
+    }
+  }
+  // 텍스트 방향
+  &.before{
+    .c-label{
+      &::before{
+        content:attr(aria-label);
+        margin-right:var(--crad-space);
+      }
+      &::after{
+        display:none;
+      }
+    }
+  }
+  // 상태
+  &.error{
+  }
+  // 형태
+  &.squared{
+    .icon{
+      border-radius:0;
+      &::before{
+        border-radius:0;
+      }
+    }
+  }
+  // 버튼 타입
+  &.button{
+    width:100%;
+    padding:0;
+    background-color:transparent;
+    .c-label{
+      min-width: 7.5rem;
+      min-height: 3rem;
+      justify-content: center;
+      text-align: center;
+      .text{
+        display:inline-flex;
+        line-height:1;
+      }
+      &::after{
+        width:100%;
+        text-align: center;
+      }
+    }
+    .c-radio{
+      &:disabled{
+        ~.c-label{
+          opacity:.4;
+          .icon{
+            background-color:transparent;
+            &::before{
+              background-color:transparent;
+            }
+          }
+        }
+      }
+      &:checked{
+        ~.c-label{
+          border:1px solid rgb(var(--black));
+          background-color: rgb(var(--white));
+          .icon{
+            background-color:transparent;
+            box-shadow:none;
+            &::before{
+              background-color:rgb(var(--white));
+            }
+          }
+        }
+        &:disabled{
+          ~.c-label{
+            opacity:.4;
+          }
+        }
+      }
+    }
+    .c-label{
+      width:100%;
+      height: 3.5rem;
+      margin:0;
+      padding:var(--num-16);
+      border-radius: .5rem;
+      background-color:rgb(var(--gray-02));
+      color:rgb(var(--black));
+      font-size: var(--num-16);
+      cursor: pointer;
+      &::before{
+        content:attr(aria-label);
+        flex:1;
+        margin-right: .5rem;
+        min-width:0;
+        font-size: inherit;
+        text-align:left;
+      }
+      &::after{
+        display:none;
+      }
+    }
+    .icon{
+      transform:none;
+      width:1.5rem;height:1.5rem;
+      border:2px solid rgb(var(--gray-07));
+      border-radius: 50%;
+      background-color:transparent;
+      &::before{
+        background-color:transparent;
+      }
+    }
+  }
+  // 버튼 타입 outline
+  &.outline{
+    width:auto;
+    .c-radio{
+      &:disabled{
+        ~.c-label{
+          border-color:var(--crad-border-color);
+          box-shadow:inset 0 0 0 2px var(--crad-border-color);
+        }
+      }
+      &:checked{
+        ~.c-label{
+          border-color:var(--crad-focus-border-color);
+          box-shadow:inset 0 0 0 2px var(--crad-focus-border-color);
+        }
+        &:disabled{
+          ~.c-label{
+            border-color:var(--crad-border-color);
+            box-shadow:inset 0 0 0 2px var(--crad-border-color);
+          }
+        }
+      }
+    }
+    &.secondary{
+      .c-radio{
+        &:checked{
+          ~.c-label{
+            border-color:var(--crad-secondary-color);
+            box-shadow:inset 0 0 0 2px var(--crad-secondary-color);
+          }
+          &:disabled{
+            ~.c-label{
+              border-color:var(--crad-border-color);
+              box-shadow:inset 0 0 0 2px var(--crad-border-color);
+            }
+          }
+        }
+      }
+    }
+    .c-label{
+      width:auto;
+      height:3.5rem;
+      border-radius: .5rem;
+      border: 1px solid var(--crad-border-color);
+      background-color:var(--white);
+      color:rgb(var(--black));
+      font-size:var(--num-16);
+      &::before,
+      &::after{
+        margin:0;
+        font-size:inherit;
+        text-align: center;
+      }
+    }
+    .icon{
+      display:none;
+    }
+  }
+  // 세로방향
+  &.vertical{
+    width:100%;
+  }
+  // 50%
+  &.half{
+    width:calc((100% / 2) - var(--crad-gap));
+    &.text-left{
+      .c-label{
+        justify-content: flex-start;
+        text-align: left;
+      }
+    }
+  }
+  // 3등분
+  &.thirds{
+    width:calc((100% / 3) - (var(--crad-gap))*2);
+  }
+  // 정렬
+  &.center{
+    .c-label{
+      justify-content: center;
+      text-align: center;
+    }
+  }
+  // 버튼 있을 때
+  &:has(.c-btn){
+    justify-content: space-between;
+    .c-btn{
+      width: auto;
+      background-color: rgba(var(--primary), 0.2);
+      color: rgb(var(--primary));
+    }
+  }
+}
+.c-radio{
+  position:absolute;top:0;left:0;z-index:-1;
+  width: 100%;
+  height: 100%;
+  border:0;
+  border-radius:0;
+  background-color:transparent;
+  &:disabled{
+    ~.c-label{
+      color:rgb(var(--gray-10));
+      &::after{
+        color:rgb(var(--gray-10))!important;
+      }
+      .icon{
+        opacity:.6;
+      }
+    }
+  }
+  &:checked{
+    ~.c-label{
+      &::after{
+        color:rgb(var(--black));
+      }
+      .icon{
+        border-width: .375rem;
+        // border-color:rgb(var(--primary));
+        border-color:var(--crad-secondary-color);
+        &::before{
+          // background-color:rgb(var(--primary));
+          background-color:var(--crad-secondary-color);
+        }
+      }
+    }
+  }
+}
+// group type
+.c-radiogroup{
+  --cradgroup-color: rgb(var(--gray-13));
+  --cradgroup-radius: .75rem;
+  --cradgroup-height: 2.75rem;
+  --cradgroup-font-color: rgb(var(--black));
+  --cradgroup-font-size: var(--num-16);
+  --cradgroup-font-weight: 400;
+  --cradgroup-font-spacing: -0.0375rem;
+  --cradgroup-font-lineheight: 1.5rem;
+  --cradgroup-active-font-color: rgb(var(--white));
+  --cradgroup-active-font-weight: 700;
+  --cradgroup-active-font-lineheight: 1.375rem;
+  --cradgroup-box-shadow: 2px 4px 12px rgba(var(--black), 0.1);
+  
+  --cradgroup-color-xs: rgb(var(--gray-02));
+  --cradgroup-radius-xs: 6.25rem;
+  --cradgroup-height-xs: 2.375rem;
+  --cradgroup-label-height-xs: 1.875rem;
+  --cradgroup-font-size-xs: var(--num-12);
+  --cradgroup-font-color-xs: rgb(var(--gray-07));
+  --cradgroup-font-lineheight-xs: 1.125rem;
+  --cradgroup-active-color-xs: rgb(var(--white));
+  --cradgroup-active-font-color-xs: rgb(var(--black));
+
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  width: 100%;
+  border-radius: var(--cradgroup-radius);
+  box-shadow: var(--cradgroup-box-shadow);
+
+  .c-radiotype{
+    flex: 1;
+    .text{
+      color:inherit;
+      font-size:inherit;
+      font-weight:inherit;
+      line-height:inherit;
+      letter-spacing:inherit;
+    }
+    label{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      width:100%;
+      padding: var(--num-10) var(--num-16); 
+      height: var(--cradgroup-height);
+      color: var(--cradgroup-font-color);
+      font-size: var(--cradgroup-font-size);
+      font-weight: var(--cradgroup-font-weight);
+      line-height: var(--cradgroup-font-lineheight);
+      letter-spacing: var(--cradgroup-font-spacing);
+      
+      &:has(.c-radio:checked){
+        background-color: var(--cradgroup-color);
+        color: var(--cradgroup-active-font-color);
+        font-weight: var(--cradgroup-active-font-weight);
+        line-height: var(--cradgroup-active-font-lineheight);
+      }
+    }
+  }
+  &.xs{
+    height: var(--cradgroup-height-xs);
+    padding: .25rem;
+    border-radius: var(--cradgroup-radius-xs);
+    box-shadow: none;
+    background-color: var(--cradgroup-color-xs);
+
+    .c-radiotype{
+      label{
+        padding: var(--num-06) var(--num-12); 
+        height: var(--cradgroup-label-height-xs);
+        border-radius: var(--cradgroup-radius-xs);
+        color: var(--cradgroup-font-color-xs);
+        font-size: var(--cradgroup-font-size-xs);
+        line-height: var(--cradgroup-font-lineheight-xs);
+        
+        &:has(.c-radio:checked){
+          background-color: var(--cradgroup-active-color-xs);
+          color: var(--cradgroup-active-font-color-xs);
+          line-height: var(--cradgroup-font-lineheight-xs);
+          box-shadow: var(--cradgroup-box-shadow);
+        }
+      }
+    }
+  }
+}
+.gender{
+  .c-radio:checked ~ .c-label .icon {
+    // border-color: rgb(var(--purple-06));
+  }
+}

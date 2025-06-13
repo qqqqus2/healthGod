@@ -1,0 +1,235 @@
+@use './../common/variable' as vars;
+@use './../common/mixin' as mixin;
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:list';
+
+// Navigation
+.c-nav {
+  --c-nav-bezier: cubic-bezier(.4, 0, .2, 1);
+  --c-nav-padding: 1rem;
+  --c-nav-padding-y: .5rem;
+  --c-nav-padding-x: .5rem;
+  --c-nav-bar-color: rgb(var(--black));
+  --c-nav-font-weight: 700;
+  --c-nav-font-color: rgb(var(--black));
+  --c-nav-font-weight: 700;
+  --c-nav-box-font-size: .875rem;
+  --c-nav-box-height: 2rem;
+  --c-nav-box-color: rgb(var(--black));
+  --c-nav-box-font-color: rgb(var(--white));
+  --c-nav-text-height: 1.25rem;
+  --c-nav-text-font-size: .75rem;
+  --c-nav-text-color: rgb(var(--gray-09));
+  --c-nav-text-active-color: rgb(var(--black));
+  --c-nav-text-bar: rgb(var(--gray-03));
+
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  background-color: rgb(var(--white));
+  
+  // 박스
+  &.box{
+    .c-navlist{ gap: 0.5rem; }
+    .c-nav-btn{
+      height: var(--c-nav-box-height);
+      padding: .375rem 1rem;
+      border: 1px solid var(--c-nav-box-color);
+      border-radius: 100px;
+      font-size: var(--c-nav-box-font-size);
+    }
+    .c-nav-item{
+      &::after{ display: none; }
+      &.is-active{
+        .c-nav-btn{
+          background-color: var(--c-nav-box-color);
+          color: var(--c-nav-box-font-color);
+          font-weight: vars.$regular;
+        }
+      }
+    }
+  }
+  // 텍스트
+  &.text{
+    .c-navlist{ gap: 0.5rem; }
+    .c-nav-btn{
+      height: var(--c-nav-text-height);
+      padding: .0625rem 1rem;
+      font-size: var(--c-nav-text-font-size);
+      color: var(--c-nav-text-color);
+    }
+    .c-nav-item{
+      background-color: transparent;
+      &:not(:last-child){
+        &::after{
+          content: '';
+          display: block;
+          width: 1px; height: .875rem;
+          left: unset; right: 0;
+          top: 50%;
+          transform: translate(0, -50%);
+          background-color: var(--c-nav-text-bar);
+        }
+      }
+      &.is-active{
+        .c-nav-btn{
+          color: var(--c-nav-text-active-color);
+        }
+      }
+    }
+  }
+
+  // 형태
+  &.fill{
+    &::after{
+      content:"";
+      display:block;
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:1px;
+      background-color:var(--lightgray);
+    }
+    .c-nav-item{
+      background-color: var(--lightgray);
+      &.is-active{
+        border:1px solid var(--lightgray);
+        border-bottom:0;
+        background-color: var(--white);
+        color: var(--c-nav-font-color);
+        font-weight: var(--c-nav-font-weight);
+        &::after{
+          display: none;
+        }
+      }
+    }
+  }
+  &.outline{
+    &::after{
+      content:"";
+      display:block;
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:1px;
+      background-color:var(--lightgray);
+    }
+    .c-nav-item{
+      background-color: var(--white);
+      &.is-active{
+        border:1px solid var(--lightgray);
+        border-bottom:0;
+        background-color: var(--white);
+        color: var(--c-nav-font-color);
+        font-weight: var(--c-nav-font-weight);
+        &::after{
+          display: none;
+        }
+      }
+    }
+  }
+  &.pills{
+    .c-nav-item{
+      background-color: var(--white);
+      &.is-active{
+        border-radius: 5px;
+        border:1px solid rgb(var(--primary));
+        color: var(--c-nav-font-color);
+        &::after{
+          display: none;
+        }
+      }
+    }
+  }
+  &.round{
+    .c-nav-item{
+      &.is-active{
+        border-radius: 20px;
+      }
+    }
+  }
+  // 정렬
+  &.justify{
+    .c-nav-btn{
+      display:inline-flex;
+      flex-grow: 1;
+    }
+    .c-nav-item{
+      flex: 1 1 0;
+    }
+    .c-navlist-inner{
+      display:flex;
+      width:100%;
+    }
+  }
+}
+// nav 버튼
+.c-nav-btn{
+  display:inline-flex;
+  align-items: center;
+  justify-content: center;
+  position:relative;
+  padding: var(--c-nav-padding-y) var(--c-nav-padding);
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  vertical-align: baseline;
+  text-align: center;
+  .text{
+    display:inline-block;
+    max-width:100%;
+    @include mixin.textClip;
+  }
+  &.is-active,
+  &[aria-selected=true]{
+  }
+  @include mixin.rippleEffectWhite;
+}
+// nav 버튼 아이템
+.c-nav-item{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: var(--white);
+  &::after{
+    content: "";
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--c-nav-bar-color);
+    transition: left .2s var(--c-nav-bezier), max-width .2s var(--c-nav-bezier), opacity .3s var(--c-nav-bezier), background-color .3s var(--c-nav-bezier);
+  }
+  &.is-active{
+    z-index:1;
+    color: var(--c-nav-font-color);
+    font-weight: var(--c-nav-font-weight);
+    &::after{
+      display: block;
+    }
+  }
+}
+// 탭 리스트
+.c-navlist{
+  display:flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  @include mixin.scrollbar;
+}
+// pc에서만 스크를 보이게 처리
+@media (hover: hover) and (pointer: fine) {
+  .c-navlist{
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+  }
+}
