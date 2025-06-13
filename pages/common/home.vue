@@ -1,5 +1,5 @@
 <template>
-    <BaseBody>
+    <BaseBody logo-type="image" :has-notification="true" :has-reward="true">
         <div>/common/home</div>
         <StepPerDayChartCard />
         <WalkingProfileCard />

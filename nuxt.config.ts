@@ -51,7 +51,6 @@ export default defineNuxtConfig({
     css: [
         // "@lemonhc/fo-ui/styles/health/style.css",
         // "@lemonhc/fo-ui/styles/health/component.css",
-
         //  "~/assets/scss/component/component.scss", // 컴포넌트 스타일 (@import 방식)
         "@lemonhc/fo-ui/fonts/fonts.css",
         "@lemonhc/fo-ui/fonts/remixicon.css",

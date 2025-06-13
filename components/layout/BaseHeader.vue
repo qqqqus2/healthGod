@@ -4,8 +4,8 @@
         :class="[
             'c-header',
             {
-                h_search: showSearch,
-                'bg-transparent': title === '건강의신',
+                h_search: showSearch, // 검색 필드가 있는 경우
+                'bg-transparent': title === '건강의신', // 건강의신 home 일 경우 투명bg
                 sticky: isSticky,
             },
         ]"
@@ -36,7 +36,12 @@
                     v-if="
                         currentLogoType === 'both' || currentLogoType === 'text'
                     "
-                    :style="{ fontSize: currentLogoType === 'both' ? '0' : '' }"
+                    :style="{
+                        fontSize:
+                            currentLogoType === 'both' && !showBackButton
+                                ? '0'
+                                : '',
+                    }"
                     >{{ title }}</strong
                 >
                 <nuxt-link
@@ -55,7 +60,7 @@
             </h1>
 
             <!-- 검색 -->
-            <div v-if="showSearch" class="search_input">
+            <!-- <div v-if="showSearch" class="search_input">
                 <div class="c-inp-el">
                     <label>
                         <input
@@ -82,210 +87,21 @@
                 >
                     <i class="icon close" aria-hidden="true" />
                 </button>
-            </div>
+            </div> -->
 
-            <!-- 유틸 버튼 -->
-            <div v-if="showUtil" class="c-header-util">
-                <router-link
-                    v-if="showSearchBtn"
-                    to="allmenusearch"
-                    class="c-btn c-icon search"
-                    aria-label="검색"
-                >
-                    <i class="icon search" aria-hidden="true" />
-                </router-link>
-                <router-link
-                    v-if="hasNotification"
-                    to="notification"
-                    class="c-btn c-icon noti"
-                    aria-label="알림 미확인 없음"
-                >
-                    <i class="icon noti" aria-hidden="true" />
-                </router-link>
-                <router-link
-                    v-if="hasNotificationDot"
-                    to="notification"
-                    class="c-btn c-icon noti"
-                    aria-label="알림 미확인 5건"
-                >
-                    <i class="icon noti" aria-hidden="true" />
-                    <span class="c-badge round xxs">
-                        <span class="text">5</span>
-                    </span>
-                </router-link>
-                <router-link
-                    v-if="showLucky"
-                    to="lucky"
-                    class="c-btn c-icon lucky"
-                    aria-label="행운복권 없음"
-                >
-                    <i class="icon lucky" aria-hidden="true" />
-                </router-link>
-                <router-link
-                    v-if="showLuckyDot"
-                    to="lucky"
-                    class="c-btn c-icon lucky"
-                    aria-label="행원복권 미확인 5건"
-                >
-                    <i class="icon lucky" aria-hidden="true" />
-                    <span class="c-badge round xxs">
-                        <span class="text">5</span>
-                    </span>
-                </router-link>
-                <router-link
-                    v-if="showChat"
-                    to="/community/inbox"
-                    class="c-btn c-icon chat"
-                    aria-label="쪽지함"
-                >
-                    <i class="icon chat" aria-hidden="true" />
-                </router-link>
-                <router-link
-                    v-if="showChatDot"
-                    to="/community/inbox"
-                    class="c-btn c-icon chat"
-                    aria-label="새로운 쪽지 있음"
-                >
-                    <i class="icon chat" aria-hidden="true" />
-                    <span class="c-badge round xxs">
-                        <span class="text">N</span>
-                    </span>
-                </router-link>
-                <router-link
-                    v-if="showSet"
-                    to="seeting"
-                    class="c-btn c-icon set"
-                    aria-label="설정"
-                >
-                    <i class="icon set" aria-hidden="true" />
-                </router-link>
-                <button
-                    v-if="showAllMenu"
-                    type="button"
-                    class="c-btn c-icon menu"
-                    aria-label="커뮤니티 전체메뉴"
-                    @click="$emit('toggleSidebar')"
-                >
-                    <i class="icon menu" aria-hidden="true" />
-                </button>
-                <button
-                    v-if="showShare"
-                    type="button"
-                    class="c-btn c-icon share"
-                    aria-label="공유하기"
-                >
-                    <i class="icon share" aria-hidden="true" />
-                </button>
-                <div
-                    v-if="showMore"
-                    :class="['c-dropdown', { 'is-show': isDropdownVisible }]"
-                >
-                    <button
-                        type="button"
-                        class="c-dropdown-btn bottom"
-                        :aria-expanded="isDropdownVisible.toString()"
-                        aria-label="더보기"
-                        @click="toggleDropdown"
-                    >
-                        <i class="icon more" aria-hidden="true" />
-                    </button>
-                    <!-- 드롭다운 패널 -->
-                    <div
-                        v-show="isDropdownVisible"
-                        class="c-dropdown-panel"
-                        style="--dropdown-top: 30px; --dropdown-right: 0px"
-                    >
-                        <div class="c-dropdown-menu">
-                            <ul class="c-dropdown-menu" role="menu">
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-link inline white"
-                                    >
-                                        <span class="text">응원하기</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-link inline white"
-                                    >
-                                        <span class="text">참가 취소하기</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-link inline white"
-                                    >
-                                        <span class="text"
-                                            >챌린지 자세히 보기</span
-                                        >
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-icon c-link inline white"
-                                    >
-                                        <i
-                                            class="icon pen"
-                                            aria-hidden="true"
-                                        />
-                                        <span class="text">수정</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-icon c-link inline white"
-                                    >
-                                        <i
-                                            class="icon del"
-                                            aria-hidden="true"
-                                        />
-                                        <span class="text">삭제</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-icon c-link inline white"
-                                    >
-                                        <i
-                                            class="icon police"
-                                            aria-hidden="true"
-                                        />
-                                        <span class="text">신고하기</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-icon c-link inline white"
-                                    >
-                                        <i
-                                            class="icon info"
-                                            aria-hidden="true"
-                                        />
-                                        <span class="text">차단하기</span>
-                                    </button>
-                                </li>
-                                <li class="c-dropdown-item" role="menuitem">
-                                    <button
-                                        type="button"
-                                        class="c-btn c-icon c-link inline white"
-                                    >
-                                        <i
-                                            class="icon info-off"
-                                            aria-hidden="true"
-                                        />
-                                        <span class="text">차단해제</span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <div v-if="hasNotification || hasReward" class="c-header-util">
+                <!-- 공지 버튼 -->
+                <div v-if="hasNotification" class="c-header-notice">
+                    <nuxt-link to="/" title="홈으로 이동">
+                        <i class="ico ico-notice" aria-label="hidden"></i>
+                    </nuxt-link>
+                </div>
+
+                <!-- 리워드 버튼 -->
+                <div v-if="hasReward" class="c-header-reward">
+                    <nuxt-link to="/" title="홈으로 이동">
+                        <i class="ico ico-reward" aria-label="hidden"></i>
+                    </nuxt-link>
                 </div>
             </div>
         </div>
@@ -293,33 +109,37 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, defineProps, defineEmits } from "vue";
+import {
+    ref,
+    computed,
+    onMounted,
+    onUnmounted,
+    defineProps,
+    defineEmits,
+} from "vue";
 
 const props = defineProps({
     pageType: { type: String, default: "" },
     title: { type: String, default: "Title" }, // 기본 타이틀
-    logoType: { type: String, default: "both" }, // "both", "text", "image" 중 하나
+    logoType: { type: String, default: "text" }, // "both", "text", "image" 중 하나
     logoTypeWithBack: { type: String, default: "" }, // 뒤로가기 버튼 있을 때의 logoType
-    showBackButton: { type: Boolean, default: false }, // 뒤로가기 버튼 표시 여부
-    showUtil: { type: Boolean, default: false }, // 유틸 버튼 표시 여부
+    showBackButton: { type: Boolean, default: true }, // 뒤로가기 버튼 표시 여부
+
     showSearch: { type: Boolean, default: false }, // 검색 필드 표시 여부
     showSearchBtn: { type: Boolean, default: false }, // 검색 버튼 표시
-    showChat: { type: Boolean, default: false }, // 쪽지함 없음
-    showChatDot: { type: Boolean, default: false }, // 쪽지함 있음
-    showLucky: { type: Boolean, default: false }, // 행운복권 없음
-    showLuckyDot: { type: Boolean, default: false }, // 행운복권 있음
-    showSet: { type: Boolean, default: false }, // 설정
-    showAllMenu: { type: Boolean, default: false }, // 전체메뉴
-    showShare: { type: Boolean, default: false }, // 공유하기
-    showMore: { type: Boolean, default: false }, // 더보기
+
     hasNotification: { type: Boolean, default: false }, // 공지 버튼 표시 여부
     hasNotificationDot: { type: Boolean, default: false }, // 공지 알림 여부
+
+    hasReward: { type: Boolean, default: false }, // 리워드 버튼표시 여부
+    hasRewardDot: { type: Boolean, default: false }, // 리워드 갯수 여부
     isCenterTitle: { type: Boolean, default: false }, // 타이틀 가운데 정렬 여부
 });
 
+// console.log('BaseHeader props received:', props)
+
 defineEmits(["toggleSidebar", "goBack"]);
 
-const isDropdownVisible = ref(false);
 const isSticky = ref(false);
 const headerRef = ref(null);
 let headerHeight = 0;
@@ -344,19 +164,15 @@ onMounted(() => {
     if (headerRef.value) {
         headerHeight = headerRef.value.offsetHeight;
     }
-    
+
     // 스크롤 이벤트 리스너 추가
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
     // 스크롤 이벤트 리스너 제거
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener("scroll", handleScroll);
 });
-
-const toggleDropdown = () => {
-    isDropdownVisible.value = !isDropdownVisible.value;
-};
 </script>
 
 <style lang="scss">
@@ -373,8 +189,12 @@ const toggleDropdown = () => {
     width: 100%;
     height: vars.$header-height;
     background-color: rgb(var(--white));
+    transition: 0.3s background cubic-bezier(0.075, 0.82, 0.165, 1);
     &.bg-transparent {
         background-color: transparent;
+    }
+    &.sticky {
+        background-color: rgba($color: #ffffff, $alpha: 0.8);
     }
     .h_title {
         display: flex;
@@ -394,58 +214,31 @@ const toggleDropdown = () => {
             background-size: contain;
         }
     }
-    .c-btn.c-icon {
-        flex: 0 0 auto;
-        align-items: center;
-        justify-content: center;
-        width: 1.5rem;
-        height: 1.5rem;
 
-        .icon {
-            width: 2rem;
-            height: 2rem;
-            mask-size: contain;
-            background-size: contain;
-            &.back {
-                width: 1.5rem;
-                height: 1.5rem;
-                mask-position: var(--c-header-icon-position);
-                background-position: var(--c-header-icon-position);
-            }
-            &.set {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
-        }
-        .dot {
-            position: absolute;
-            top: 0.2rem;
-            right: 0.6rem;
-            background-color: var(--red);
-        }
-    }
-    .c-badge {
-        position: absolute;
-        // top: -0.75rem;
-        // right: -0.5rem;
-        top: 0;
-        right: 0;
-        background-color: #ff6a6a;
-        color: rgb(var(--white));
-    }
-    .c-dropdown-panel {
-        padding: 8px;
-        .c-btn.c-link,
-        .c-btn.c-icon .text {
-            font-size: var(--num-13);
-        }
-    }
     .c-header-util {
         // overflow: hidden;
         display: flex;
         flex: 0 0 auto;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1.6rem;
+        .c-header-notice,
+        .c-header-reward {
+            font-size: 0;
+            .ico {
+                display: inline-block;
+                width: 2.4rem;
+                height: 2.4rem;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                &.ico-notice {
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M9.33333 20.0909C10.041 20.6562 10.9755 21 12 21C13.0245 21 13.959 20.6562 14.6667 20.0909M4.50763 17.1818C4.08602 17.1818 3.85054 16.5194 4.10557 16.1514C4.69736 15.2975 5.26855 14.0451 5.26855 12.537L5.29296 10.3517C5.29296 6.29145 8.29581 3 12 3C15.7588 3 18.8058 6.33993 18.8058 10.4599L18.7814 12.537C18.7814 14.0555 19.3329 15.3147 19.9006 16.169C20.1458 16.5379 19.9097 17.1818 19.4933 17.1818H4.50763Z' stroke='%232B2B2B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                }
+                &.ico-reward {
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M4.75 8.91425H18.75M6.55952 3V4.54304M16.75 3V4.54285M19.75 7.24285V18.3C19.75 19.7912 18.5561 21 17.0833 21H6.41667C4.94391 21 3.75 19.7912 3.75 18.3V7.24285C3.75 5.75168 4.94391 4.54285 6.41667 4.54285H17.0833C18.5561 4.54285 19.75 5.75168 19.75 7.24285Z' stroke='%232B2B2B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                }
+            }
+        }
     }
     .c-header-inner {
         display: flex;
@@ -463,12 +256,6 @@ const toggleDropdown = () => {
             .c-btn.c-icon {
                 align-items: flex-end;
                 justify-content: flex-start;
-            }
-            .c-header-util {
-                .c-btn.c-icon {
-                    width: 2.125rem;
-                    height: 2.125rem;
-                }
             }
         }
     }
